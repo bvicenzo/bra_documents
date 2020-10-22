@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bra_documents (0.1.0)
+    bra_documents (1.0.0)
 
 GEM
   remote: https://rubygems.org/
