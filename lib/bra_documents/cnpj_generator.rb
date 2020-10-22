@@ -9,6 +9,15 @@ module BraDocuments
     MATRIX_SUBSIDIARY_SIZE = 4
 
     class << self
+      # Generates a random CNPJ document number or add verifying digits to one if it's given.
+      # It can return only numbers or formatted with mask
+      #
+      # BraDocuments::CNPJGenerator.generate # => "62885807804809"
+      # BraDocuments::CNPJGenerator.generate(formatted: true) # => "53.855.973/0664-39"
+      # BraDocuments::CNPJGenerator.generate(company_number: '53855973') # => "53855973879456"
+      # BraDocuments::CNPJGenerator.generate(company_number: '53855973', formatted: true) # => "53.855.973/8189-02"
+      # BraDocuments::CNPJGenerator.generate(company_number: '53855973', matrix_subsidiary_number: '0001') # => "53855973000179"
+      # BraDocuments::CNPJGenerator.generate(company_number: '53855973', matrix_subsidiary_number: '0001', formatted: true) # => "53.855.973/0001-79"
       def generate(company_number: nil, matrix_subsidiary_number: nil, formatted: false)
         company_number = number_for('Company', COMPANY_NUMBER_SIZE, company_number)
         matrix_subsidiary_number = number_for('Matrix or subsidiary', MATRIX_SUBSIDIARY_SIZE, matrix_subsidiary_number)
