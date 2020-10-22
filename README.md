@@ -72,6 +72,73 @@ BraDocuments::Formatter.format('53855973879456', as: :cnpj)
 #=> "53.855.973/8794-56"
 ```
 
+### Tests Matching
+
+#### Config
+If you use RSpec to test your apps we also provide mathers to make easy test if your field has a CPF with a valid format.
+
+In your `spec/spec_helper.rb` file, require our helpers.
+
+```rb
+# spec/spec_helper.rb
+
+require 'bra_documents/testing/rspec'
+```
+
+#### Using
+
+```rb
+RSpec.describe 'my tests' do
+  it 'is a formatted CPF' do
+    expect('123.456.789-00').to be_a_formatted_cpf
+  end
+
+  it 'receives a formatted CPF' do
+    object = double(action: true)
+
+    expect(object).to receive(:action).with(a_formatted_cpf)
+
+    object.action('123.456.789-00')
+  end
+
+  it 'is a raw CPF' do
+    expect('12345678900').to be_a_raw_cpf
+  end
+
+  it 'receives a raw CPF' do
+    object = double(action: true)
+
+    expect(object).to receive(:action).with(a_raw_cpf)
+
+    object.action('12345678900')
+  end
+
+  it 'is a formatted CNPJ' do
+    expect('53.855.973/8794-56').to be_a_formatted_cnpj
+  end
+
+  it 'receives a formatted CNPJ' do
+    object = double(action: true)
+
+    expect(object).to receive(:action).with(a_formatted_cnpj)
+
+    object.action('53.855.973/8794-56')
+  end
+
+  it 'is a raw CNPJ' do
+    expect('53855973879456').to be_a_raw_cnpj
+  end
+
+  it 'receives a raw CNPJ' do
+    object = double(action: true)
+
+    expect(object).to receive(:action).with(a_raw_cnpj)
+
+    object.action('53855973879456')
+  end
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
