@@ -5,20 +5,20 @@ RSpec.describe BraDocuments::CPFGenerator do
     context 'and person number is not sent' do
       context 'and formatted option is not sent' do
         it 'generates a CPF using totally random number' do
-          expect(described_class.generate).to match(/\A\d{11}\z/)
+          expect(described_class.generate).to be_a_raw_cpf
         end
       end
 
       context 'and formatted option is sent' do
         context 'and it is false' do
           it 'generates a CPF using totally random number' do
-            expect(described_class.generate).to match(/\A\d{11}\z/)
+            expect(described_class.generate).to be_a_raw_cpf
           end
         end
 
         context 'and it is true' do
           it 'generates a formatted CPF using totally random number' do
-            expect(described_class.generate(formatted: true)).to match(/^(\d{3}\.\d{3}\.\d{3})-(\d{2})$/)
+            expect(described_class.generate(formatted: true)).to be_a_formatted_cpf
           end
         end
       end
@@ -54,7 +54,7 @@ RSpec.describe BraDocuments::CPFGenerator do
 
           context 'and it is true' do
             it 'generates a formatted CPF number person number' do
-              expect(described_class.generate(person_number: person_number, formatted: true)).to match(/^(\d{3}\.\d{3}\.\d{3})-(\d{2})$/)
+              expect(described_class.generate(person_number: person_number, formatted: true)).to be_a_formatted_cpf
             end
           end
         end
