@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.com/bvicenzo/bra_documents.svg?branch=master)](https://travis-ci.com/bvicenzo/bra_documents)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/bra_documents`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem make us able to generate Brazilian documents, such as CPF and CNPJ.
+We can generate a tottaly random number, or pass the number and the gem completes with the verification digits.
+If you already have a CPF or CNPJ only their numbers, you can also put the mask using the formatter.
 
 ## Installation
 
@@ -24,7 +24,53 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### CPF Generation
+
+```rb
+BraDocuments::CPFGenerator.generate
+#=> "86027265892"
+
+BraDocuments::CPFGenerator.generate(formatted: true)
+#=> "038.857.544-10"
+
+BraDocuments::CPFGenerator.generate(person_number: '123123123')
+#=> "12312312387"
+
+BraDocuments::CPFGenerator.generate(person_number: '123123123', formatted: true)
+#=> "123.123.123-87"
+```
+
+### CNPJ Generation
+
+```rb
+BraDocuments::CNPJGenerator.generate
+#=> "62885807804809"
+
+BraDocuments::CNPJGenerator.generate(formatted: true)
+#=> "53.855.973/0664-39"
+
+BraDocuments::CNPJGenerator.generate(company_number: '53855973')
+#=> "53855973879456"
+
+BraDocuments::CNPJGenerator.generate(company_number: '53855973', formatted: true)
+#=> "53.855.973/8189-02"
+
+BraDocuments::CNPJGenerator.generate(company_number: '53855973', matrix_subsidiary_number: '0001')
+#=> "53855973000179"
+
+BraDocuments::CNPJGenerator.generate(company_number: '53855973', matrix_subsidiary_number: '0001', formatted: true)
+#=> "53.855.973/0001-79"
+```
+
+### Formatting
+
+```rb
+BraDocuments::Formatter.format('86027265892', as: :cpf)
+# => "860.272.658-92"
+
+BraDocuments::Formatter.format('53855973879456', as: :cnpj)
+#=> "53.855.973/8794-56"
+```
 
 ## Development
 
