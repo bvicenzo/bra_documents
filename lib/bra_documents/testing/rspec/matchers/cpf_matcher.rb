@@ -11,7 +11,7 @@ RSpec::Matchers.define :a_formatted_cpf do
 
   failure_message do |cpf|
     "Was expected `#{cpf.inspect}` to be a Brazilian CPF document number but it isn't.\n"\
-      "A CPF has the following format XXX.XXX.XXX-XX where X are numbers from 0 to 9.\n"\
+      "A CPF has the following format XXX.XXX.XXX-XX where X are numbers from 0 to 9.\n"
   end
 end
 
@@ -24,7 +24,7 @@ RSpec::Matchers.define :a_raw_cpf do
 
   failure_message do |cpf|
     "Was expected `#{cpf.inspect}` to be a raw Brazilian CPF document number but it isn't.\n"\
-      "A raw CPF has the following format XXXXXXXXXXX where X are numbers from 0 to 9.\n"\
+      "A raw CPF has the following format XXXXXXXXXXX where X are numbers from 0 to 9.\n"
   end
 end
 

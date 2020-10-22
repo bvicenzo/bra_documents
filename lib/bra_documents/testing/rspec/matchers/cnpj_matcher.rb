@@ -11,7 +11,7 @@ RSpec::Matchers.define :a_formatted_cnpj do
 
   failure_message do |cnpj|
     "Was expected `#{cnpj.inspect}` to be a Brazilian CNPJ document number but it isn't.\n"\
-      "A CNPJ has the following format XX.XXX.XXX/XXXX-XX where X are numbers from 0 to 9.\n"\
+      "A CNPJ has the following format XX.XXX.XXX/XXXX-XX where X are numbers from 0 to 9.\n"
   end
 end
 
@@ -24,7 +24,7 @@ RSpec::Matchers.define :a_raw_cnpj do
 
   failure_message do |cnpj|
     "Was expected `#{cnpj.inspect}` to be a raw Brazilian cnpj document number but it isn't.\n"\
-      "A raw CNPJ has the following format XXXXXXXXXXXXXX where X are numbers from 0 to 9.\n"\
+      "A raw CNPJ has the following format XXXXXXXXXXXXXX where X are numbers from 0 to 9.\n"
   end
 end
 
