@@ -11,3 +11,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - CPF number generator
   - CNPJ number generator
   - RSpec CPF matcher helpers
+  - RSpec CNPJ matcher helpers
