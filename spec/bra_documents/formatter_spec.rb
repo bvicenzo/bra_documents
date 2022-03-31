@@ -5,7 +5,7 @@ RSpec.describe BraDocuments::Formatter do
     context 'when an unknown format is given' do
       it 'raises an exception' do
         expect { described_class.format('123456789011', as: :rg) }
-          .to raise_error(NoMethodError, "undefined method `[]' for nil:NilClass")
+          .to raise_error(ArgumentError, 'Format "rg" is not know. Known formats: cpf, cnpj.')
       end
     end
 
