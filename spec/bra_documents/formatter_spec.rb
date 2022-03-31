@@ -41,5 +41,18 @@ RSpec.describe BraDocuments::Formatter do
       end
     end
   end
-end
 
+  describe '.raw' do
+    context 'when value is not a string' do
+      it 'requires a string' do
+        expect { described_class.raw(nil) }.to raise_error(ArgumentError, '"nil" must be a String.')
+      end
+    end
+
+    context 'when value is a string' do
+      it 'removes all not numbers from string' do
+        expect(described_class.raw('123.456.077-88')).to eq('12345607788')
+      end
+    end
+  end
+end
