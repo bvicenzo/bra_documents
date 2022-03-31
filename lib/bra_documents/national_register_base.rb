@@ -46,6 +46,10 @@ module BraDocuments
           .with_index { |multiplicator, position| numbers[position] * multiplicator }
           .sum
       end
+
+      def black_listed?(numbers)
+        numbers.chars.uniq.size == 1
+      end
     end
   end
 end
