@@ -38,7 +38,8 @@ module BraDocuments
       end
 
       def sum_and_multiply(numbers, multiplicators)
-        multiplicators.map
+        multiplicators
+          .map
           .with_index { |multiplicator, position| numbers[position] * multiplicator }
           .sum
       end
