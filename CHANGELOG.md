@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.2] - 2020-22-10
+
 ### Fixed
 
 - CPFGenerator.valid_verification_digit? returning false if document does not have CPF format;
