@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.1] - 2020-22-10
+
 ### Added
 
 - Add Formatter.raw method to make a document number to have only numbers;
