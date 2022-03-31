@@ -41,7 +41,7 @@ module BraDocuments
       #   # => true
       def valid_verification_digit?(document:)
         raw_document = Formatter.raw(document)
-        return false if raw_document.chars.uniq.size == 1
+        return false if black_listed?(raw_document) || !Matcher.match?(raw_document, kind: :cpf, mode: :raw)
 
         person_number = raw_document.slice(0..(PERSON_NUMBER_SIZE - 1))
         verified_digit = raw_document.slice(PERSON_NUMBER_SIZE..(raw_document.size - 1))
