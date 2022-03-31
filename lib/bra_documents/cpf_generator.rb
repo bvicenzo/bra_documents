@@ -26,7 +26,7 @@ module BraDocuments
         numbers = number_for('Person', PERSON_NUMBER_SIZE, person_number)
         full_number = complete!(numbers)
 
-        formatted ?  Formatter.format(full_number, as: :cpf) : full_number
+        formatted ? Formatter.format(full_number, as: :cpf) : full_number
       end
 
       # Returns if a CPF has a valid verification digit.
@@ -46,7 +46,7 @@ module BraDocuments
         person_number = raw_document.slice(0..(PERSON_NUMBER_SIZE - 1))
         verified_digit = raw_document.slice(PERSON_NUMBER_SIZE..(raw_document.size - 1))
 
-        generate(person_number:).end_with?(verified_digit)
+        generate(person_number: person_number).end_with?(verified_digit)
       end
 
       private

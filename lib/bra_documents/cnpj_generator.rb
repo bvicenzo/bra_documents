@@ -62,7 +62,8 @@ module BraDocuments
           .slice(COMPANY_NUMBER_SIZE..(COMPANY_NUMBER_SIZE + MATRIX_SUBSIDIARY_SIZE - 1))
         verified_digit = raw_document.slice(-2..-1)
 
-        generate(company_number:, matrix_subsidiary_number:).end_with?(verified_digit)
+        generate(company_number: company_number, matrix_subsidiary_number: matrix_subsidiary_number)
+          .end_with?(verified_digit)
       end
 
       private
