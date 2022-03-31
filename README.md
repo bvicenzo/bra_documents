@@ -40,6 +40,19 @@ BraDocuments::CPFGenerator.generate(person_number: '123123123', formatted: true)
 #=> "123.123.123-87"
 ```
 
+### CPF digit verification
+
+```rb
+BraDocuments::CPFGenerator.valid_verification_digit?(document: '86027265892')
+#=> true
+
+BraDocuments::CPFGenerator.valid_verification_digit?(document: '123.123.123-87')
+#=> true
+
+BraDocuments::CPFGenerator.valid_verification_digit?(document: '123.123.123-88')
+#=> false
+```
+
 ### CNPJ Generation
 
 ```rb
@@ -62,6 +75,19 @@ BraDocuments::CNPJGenerator.generate(company_number: '53855973', matrix_subsidia
 #=> "53.855.973/0001-79"
 ```
 
+### CNPJ digit verification
+
+```rb
+BraDocuments::CNPJGenerator.valid_verification_digit?(document: '62885807804809')
+#=> true
+
+BraDocuments::CNPJGenerator.valid_verification_digit?(document: '53.855.973/0001-79')
+#=> true
+
+BraDocuments::CNPJGenerator.valid_verification_digit?(document: '53855973000177')
+#=> false
+```
+
 ### Formatting
 
 ```rb
@@ -70,6 +96,25 @@ BraDocuments::Formatter.format('86027265892', as: :cpf)
 
 BraDocuments::Formatter.format('53855973879456', as: :cnpj)
 #=> "53.855.973/8794-56"
+
+BraDocuments::Formatter.raw('53.855.973/8794-56')
+#=> "53855973879456"
+```
+
+### Matching
+
+```rb
+BraDocuments::Matcher.match?('11111111111', kind: :cpf, mode: :raw)
+#=> true
+
+BraDocuments::Matcher.match?('11111111111', kind: :cpf, mode: :formatted)
+#=> false
+
+BraDocuments::Matcher.match?('11111111111', kind: :cnpj, mode: :raw)
+#=> false
+
+BraDocuments::Matcher.match?('90.978.812/0001-07', kind: :cnpj, mode: :formatted)
+#=> true
 ```
 
 ### Tests Matching
