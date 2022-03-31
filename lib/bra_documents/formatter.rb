@@ -14,6 +14,7 @@ module BraDocuments
       # BraDocuments::Formatter.format('86027265892', as: :cpf) # => "860.272.658-92"
       # BraDocuments::Formatter.format('53855973879456', as: :cnpj) # => "53.855.973/8794-56"
       def format(number, as:)
+        raise ArgumentError, "\"#{number.inspect}\" must be a String." unless number.is_a?(String)
         unless known_format?(as)
           raise ArgumentError, "Format \"#{as}\" is not know. Known formats: #{known_formats.join(', ')}."
         end
