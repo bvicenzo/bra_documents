@@ -15,7 +15,10 @@ module BraDocuments
       def number_for(number_description, number_size, given_value)
         given_value = Formatter.raw(given_value.to_s)
         if !given_value.to_s.empty?
-          raise ArgumentError, "#{number_description} number must be a number with #{number_size} digits." unless given_value.size == number_size
+          unless given_value.size == number_size
+            raise ArgumentError, "#{number_description} number must be a number with #{number_size} digits."
+          end
+
           given_value.split('').map(&:to_i)
         else
           number_with(number_size)
