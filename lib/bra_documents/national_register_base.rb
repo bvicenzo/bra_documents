@@ -3,7 +3,6 @@
 module BraDocuments
   class NationalRegisterBase
     class << self
-      NOT_NUMBER_PATTERN = /\D/.freeze
       BASE = 11
 
       private
@@ -14,9 +13,12 @@ module BraDocuments
       end
 
       def number_for(number_description, number_size, given_value)
-        given_value = only_digits_for(given_value)
+        given_value = Formatter.raw(given_value.to_s)
         if !given_value.to_s.empty?
-          raise ArgumentError, "#{number_description} number must be a number with #{number_size} digits." unless given_value.size == number_size
+          unless given_value.size == number_size
+            raise ArgumentError, "#{number_description} number must be a number with #{number_size} digits."
+          end
+
           given_value.split('').map(&:to_i)
         else
           number_with(number_size)
@@ -25,10 +27,6 @@ module BraDocuments
 
       def number_with(size)
         size.times.map { rand(10) }
-      end
-
-      def only_digits_for(number)
-        number.to_s.gsub(NOT_NUMBER_PATTERN, '')
       end
 
       def verification_digit_for(numbers)
@@ -43,7 +41,8 @@ module BraDocuments
       end
 
       def sum_and_multiply(numbers, multiplicators)
-        multiplicators.map
+        multiplicators
+          .map
           .with_index { |multiplicator, position| numbers[position] * multiplicator }
           .sum
       end

@@ -61,4 +61,50 @@ RSpec.describe BraDocuments::CPFGenerator do
       end
     end
   end
+
+  describe '#valid_verification_digit?' do
+    context 'when cpf is raw' do
+      context 'and all numbers are equal' do
+        it 'is invalid verification digit' do
+          expect(described_class).not_to be_valid_verification_digit(document: '11111111111')
+        end
+      end
+
+      context 'and numbers are different' do
+        context 'but digit calculation does not match' do
+          it 'is invalid verification digit' do
+            expect(described_class).not_to be_valid_verification_digit(document: '12345670089')
+          end
+        end
+
+        context 'and digit calculation matches' do
+          it 'is valid verification digit' do
+            expect(described_class).to be_valid_verification_digit(document: '12345670088')
+          end
+        end
+      end
+    end
+
+    context 'when cpf is formatted' do
+      context 'and all numbers are equal' do
+        it 'is invalid verification digit' do
+          expect(described_class).not_to be_valid_verification_digit(document: '111.111.111-11')
+        end
+      end
+
+      context 'and numbers are different' do
+        context 'but digit calculation does not match' do
+          it 'is invalid verification digit' do
+            expect(described_class).not_to be_valid_verification_digit(document: '123.456.700-89')
+          end
+        end
+
+        context 'and digit calculation matches' do
+          it 'is valid verification digit' do
+            expect(described_class).to be_valid_verification_digit(document: '123.456.700-88')
+          end
+        end
+      end
+    end
+  end
 end

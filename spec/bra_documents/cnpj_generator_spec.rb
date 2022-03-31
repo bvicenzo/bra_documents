@@ -154,4 +154,50 @@ RSpec.describe BraDocuments::CNPJGenerator do
       end
     end
   end
+
+  describe '#valid_verification_digit?' do
+    context 'when cnpj is raw' do
+      context 'and all numbers are equal' do
+        it 'is invalid verification digit' do
+          expect(described_class).not_to be_valid_verification_digit(document: '11111111111111')
+        end
+      end
+
+      context 'and numbers are different' do
+        context 'but digit calculation does not match' do
+          it 'is invalid verification digit' do
+            expect(described_class).not_to be_valid_verification_digit(document: '75777407000128')
+          end
+        end
+
+        context 'and digit calculation matches' do
+          it 'is valid verification digit' do
+            expect(described_class).to be_valid_verification_digit(document: '26086824000110')
+          end
+        end
+      end
+    end
+
+    context 'when cnpj is formatted' do
+      context 'and all numbers are equal' do
+        it 'is invalid verification digit' do
+          expect(described_class).not_to be_valid_verification_digit(document: '11.111.111/1111-11')
+        end
+      end
+
+      context 'and numbers are different' do
+        context 'but digit calculation does not match' do
+          it 'is invalid verification digit' do
+            expect(described_class).not_to be_valid_verification_digit(document: '57.153.713/0001-01')
+          end
+        end
+
+        context 'and digit calculation matches' do
+          it 'is valid verification digit' do
+            expect(described_class).to be_valid_verification_digit(document: '57.153.713/0001-02')
+          end
+        end
+      end
+    end
+  end
 end
