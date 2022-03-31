@@ -24,6 +24,10 @@ module BraDocuments
         Kernel.format(format_data[:mask], *format_data[:pattern].match(number).captures)
       end
 
+      # Formats removing all not number caracters from string.
+      #
+      # BraDocuments::Formatter.raw('860.272.658-9') # => "286027265892"
+      # BraDocuments::Formatter.format('53.855.973/8794-56') # => "53855973879456"
       def raw(number)
         raise ArgumentError, "\"#{number.inspect}\" must be a String." unless number.is_a?(String)
 
