@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "bra_documents"
+require 'bundler/setup'
+require 'bra_documents'
+require 'pry'
+require 'pry-nav'
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
@@ -10,5 +12,5 @@ require "bra_documents"
 # require "pry"
 # Pry.start
 
-require "irb"
+require 'irb'
 IRB.start(__FILE__)
