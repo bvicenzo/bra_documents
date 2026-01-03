@@ -21,7 +21,7 @@ RSpec.describe BraDocuments::Formatter do
           context 'but the document number has not 11 digits' do
             it 'raises an exception' do
               expect { described_class.format('12345678901a', as: :cpf) }
-                .to raise_error(NoMethodError, "undefined method `captures' for nil:NilClass")
+                .to raise_error(NoMethodError, "undefined method 'captures' for nil")
             end
           end
 
@@ -36,7 +36,7 @@ RSpec.describe BraDocuments::Formatter do
           context 'but the document number has not 14 digits' do
             it 'raises an exception' do
               expect { described_class.format('1234567890123a', as: :cnpj) }
-                .to raise_error(NoMethodError, "undefined method `captures' for nil:NilClass")
+                .to raise_error(NoMethodError, "undefined method 'captures' for nil")
             end
           end
 
