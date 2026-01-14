@@ -2,10 +2,10 @@
 
 module BraDocuments
   class Formatter
-    NOT_NUMBER = /\D/
+    RAW_TRANSFORM_PATTERNS = { cpf: /[^[:digit:]]/, cnpj: /[^[:alnum:]]/ }.freeze
     FORMATS = {
       cpf: { pattern: /\A(\d{3})(\d{3})(\d{3})(\d{2})\z/, mask: '%s.%s.%s-%s' },
-      cnpj: { pattern: /\A(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})\z/, mask: '%s.%s.%s/%s-%s' }
+      cnpj: { pattern: /\A([A-Z0-9]{2})([A-Z0-9]{3})([A-Z0-9]{3})([A-Z0-9]{4})(\d{2})\z/i, mask: '%s.%s.%s/%s-%s' }
     }.freeze
 
     class << self
@@ -28,10 +28,10 @@ module BraDocuments
       #
       # BraDocuments::Formatter.raw('860.272.658-9') # => "286027265892"
       # BraDocuments::Formatter.format('53.855.973/8794-56') # => "53855973879456"
-      def raw(number)
+      def raw(number, kind: :cpf)
         raise ArgumentError, "\"#{number.inspect}\" must be a String." unless number.is_a?(String)
 
-        number.gsub(NOT_NUMBER, '')
+        number.gsub(RAW_TRANSFORM_PATTERNS[kind], '')
       end
 
       private
