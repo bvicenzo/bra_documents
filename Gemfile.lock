@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bra_documents (1.0.2)
+    bra_documents (1.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -54,4 +54,4 @@ DEPENDENCIES
   rspec
 
 BUNDLED WITH
-   4.0.3
+  4.0.3
