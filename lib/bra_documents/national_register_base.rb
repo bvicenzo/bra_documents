@@ -4,6 +4,7 @@ module BraDocuments
   class NationalRegisterBase
     class << self
       BASE = 11
+      ZERO_ON_ASCII_CODE = 48
 
       private
 
@@ -19,17 +20,20 @@ module BraDocuments
             raise ArgumentError, "#{number_description} number must be a number with #{number_size} digits."
           end
 
-          given_value.split('').map(&:to_i)
+          given_value.split('')
         else
           number_with(number_size)
         end
       end
 
       def verification_digit_for(numbers)
-        verification_digit_multiplicators = verification_digit_multiplicators_for(numbers)
-        sum_and_multiplication = sum_and_multiply(numbers, verification_digit_multiplicators)
+        numbers_to_calculate = calculable_numbers_for(numbers:)
+        verification_digit_multiplicators = verification_digit_multiplicators_for(numbers_to_calculate)
+        sum_and_multiplication = sum_and_multiply(numbers_to_calculate, verification_digit_multiplicators)
         verified_digit(sum_and_multiplication)
       end
+
+      def calculable_numbers_for(numbers:) = numbers.map { |number| number.to_s.upcase.ord - ZERO_ON_ASCII_CODE }
 
       def verified_digit(sum_and_multiplication)
         rest = sum_and_multiplication % BASE

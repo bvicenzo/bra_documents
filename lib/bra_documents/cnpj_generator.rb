@@ -7,6 +7,7 @@ module BraDocuments
   class CNPJGenerator < NationalRegisterBase
     COMPANY_NUMBER_SIZE = 8
     MATRIX_SUBSIDIARY_SIZE = 4
+    ALPHANUM_UPPER = [*'A'..'Z', *'0'..'9'].freeze
 
     class << self
       # Generates a random CNPJ document number or add verifying digits to one if it's given.
@@ -39,7 +40,7 @@ module BraDocuments
           'Matrix or subsidiary',
           MATRIX_SUBSIDIARY_SIZE,
           matrix_subsidiary_number,
-          kind: :cpf
+          kind: :cnpj
         )
         numbers = company_number + matrix_subsidiary_number
 
@@ -59,7 +60,7 @@ module BraDocuments
       #   BraDocuments::CPFGenerator.valid_verification_digit?(document: '29432530000190')
       #   # => true
       def valid_verification_digit?(document:)
-        raw_document = Formatter.raw(document)
+        raw_document = Formatter.raw(document, kind: :cnpj)
         return false if !Matcher.match?(raw_document, kind: :cnpj, mode: :raw)
 
         company_number = raw_document.slice(0..(COMPANY_NUMBER_SIZE - 1))
@@ -74,7 +75,7 @@ module BraDocuments
       private
 
       def number_with(size)
-        size.times.map { rand(10) }
+        size.times.map { ALPHANUM_UPPER.sample }
       end
 
       def verification_digit_multiplicators_for(numbers)
