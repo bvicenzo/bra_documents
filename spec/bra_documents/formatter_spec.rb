@@ -39,8 +39,8 @@ RSpec.describe BraDocuments::Formatter do
           end
 
           context 'and the document number has 14 digits' do
-            it 'formats the number' do
-              expect(described_class.format('B2345A78901234', as: :cnpj)).to eq('B2.345.A78/9012-34')
+            it 'formats the number upcasing letters' do
+              expect(described_class.format('b2345A78901234', as: :cnpj)).to eq('B2.345.A78/9012-34')
             end
           end
         end

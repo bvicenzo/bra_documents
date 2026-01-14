@@ -21,7 +21,7 @@ module BraDocuments
 
         format_data = FORMATS[as]
 
-        Kernel.format(format_data[:mask], *format_data[:pattern].match(number).captures)
+        Kernel.format(format_data[:mask], *format_data[:pattern].match(number).captures).upcase
       end
 
       # Formats removing all not number caracters from string.
