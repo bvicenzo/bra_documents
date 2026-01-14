@@ -55,7 +55,7 @@ module BraDocuments
       #   # => true
       def valid_verification_digit?(document:)
         raw_document = Formatter.raw(document)
-        return false if black_listed?(raw_document) || !Matcher.match?(raw_document, kind: :cnpj, mode: :raw)
+        return false if !Matcher.match?(raw_document, kind: :cnpj, mode: :raw)
 
         company_number = raw_document.slice(0..(COMPANY_NUMBER_SIZE - 1))
         matrix_subsidiary_number = raw_document
