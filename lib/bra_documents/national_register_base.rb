@@ -12,8 +12,8 @@ module BraDocuments
         numbers.join
       end
 
-      def number_for(number_description, number_size, given_value)
-        given_value = Formatter.raw(given_value.to_s)
+      def number_for(number_description, number_size, given_value, kind:)
+        given_value = Formatter.raw(given_value.to_s, kind:)
         if !given_value.to_s.empty?
           unless given_value.size == number_size
             raise ArgumentError, "#{number_description} number must be a number with #{number_size} digits."
@@ -23,10 +23,6 @@ module BraDocuments
         else
           number_with(number_size)
         end
-      end
-
-      def number_with(size)
-        size.times.map { rand(10) }
       end
 
       def verification_digit_for(numbers)

@@ -23,7 +23,7 @@ module BraDocuments
       #   BraDocuments::CPFGenerator.generate(person_number: '123123123', formatted: true)
       #   # => "123.123.123-87"
       def generate(person_number: nil, formatted: false)
-        numbers = number_for('Person', PERSON_NUMBER_SIZE, person_number)
+        numbers = number_for('Person', PERSON_NUMBER_SIZE, person_number, kind: :cpf)
         full_number = complete!(numbers)
 
         formatted ? Formatter.format(full_number, as: :cpf) : full_number
@@ -50,6 +50,10 @@ module BraDocuments
       end
 
       private
+
+      def number_with(size)
+        size.times.map { rand(10) }
+      end
 
       def verification_digit_multiplicators_for(numbers)
         (2..numbers.size.next).to_a.reverse

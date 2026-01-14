@@ -34,8 +34,13 @@ module BraDocuments
       #    )
       #  # => "53.855.973/0001-79"
       def generate(company_number: nil, matrix_subsidiary_number: nil, formatted: false)
-        company_number = number_for('Company', COMPANY_NUMBER_SIZE, company_number)
-        matrix_subsidiary_number = number_for('Matrix or subsidiary', MATRIX_SUBSIDIARY_SIZE, matrix_subsidiary_number)
+        company_number = number_for('Company', COMPANY_NUMBER_SIZE, company_number, kind: :cnpj)
+        matrix_subsidiary_number = number_for(
+          'Matrix or subsidiary',
+          MATRIX_SUBSIDIARY_SIZE,
+          matrix_subsidiary_number,
+          kind: :cpf
+        )
         numbers = company_number + matrix_subsidiary_number
 
         full_number = complete!(numbers)
@@ -67,6 +72,10 @@ module BraDocuments
       end
 
       private
+
+      def number_with(size)
+        size.times.map { rand(10) }
+      end
 
       def verification_digit_multiplicators_for(numbers)
         (2..(numbers.size - 7)).to_a.reverse + (2..9).to_a.reverse
