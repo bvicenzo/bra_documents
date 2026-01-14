@@ -80,10 +80,10 @@ BraDocuments::CNPJGenerator.generate(company_number: '53855973', matrix_subsidia
 
 # Alphanumeric CNPJ examples
 BraDocuments::CNPJGenerator.generate(company_number: 'AB12CD34')
-#=> "AB12CD34567890"
+#=> "AB12CD34EUJW83"
 
 BraDocuments::CNPJGenerator.generate(company_number: 'AB12CD34', matrix_subsidiary_number: '0A01', formatted: true)
-#=> "AB.12C.D34/0A01-79"
+#=> "AB.12C.D34/0A01-60"
 ```
 
 ### CNPJ digit verification
@@ -101,10 +101,10 @@ BraDocuments::CNPJGenerator.valid_verification_digit?(document: '53855973000177'
 #=> false
 
 # Alphanumeric CNPJ validation
-BraDocuments::CNPJGenerator.valid_verification_digit?(document: 'AB12CD3400A179')
+BraDocuments::CNPJGenerator.valid_verification_digit?(document: 'AB12CD340A0160')
 #=> true (if valid digits)
 
-BraDocuments::CNPJGenerator.valid_verification_digit?(document: 'AB.12C.D34/00A1-79')
+BraDocuments::CNPJGenerator.valid_verification_digit?(document: 'AB.12C.D34/0A01-60')
 #=> true (if valid digits)
 ```
 
