@@ -8,6 +8,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Alphanumeric CNPJ support: company number and branch/subsidiary number now accept letters (A-Z) and numbers (0-9);
+- Enhanced CNPJ generation with alphanumeric character support;
+- Updated CNPJ formatter to handle alphanumeric characters (outputs uppercase);
+- Enhanced CNPJ matcher with alphanumeric pattern validation;
+- RSpec matchers (`be_a_formatted_cnpj`, `be_a_raw_cnpj`, `a_formatted_cnpj`, `a_raw_cnpj`) now support alphanumeric CNPJ validation;
+
+### Changed
+
+- CNPJ verification digit calculation now supports alphanumeric characters in company and branch numbers;
+- `Formatter.raw` method now accepts `kind:` parameter to properly handle CNPJ alphanumeric characters;
+- Matcher patterns now reject documents where all characters are identical (e.g., '11111111111' for CPF, 'AAAAAAAAAAAAAA' for CNPJ);
+
+### Fixed
+
+- Ruby 4.0 compatibility: removed `__FILE__` argument from `IRB.start` in bin/console;
+- Added `irb` gem as development dependency for Ruby 4.0+;
+
 ## [1.0.2] - 2020-22-10
 
 ### Fixed
