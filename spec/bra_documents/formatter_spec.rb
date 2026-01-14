@@ -39,8 +39,8 @@ RSpec.describe BraDocuments::Formatter do
           end
 
           context 'and the document number has 14 digits' do
-            it 'formats the number' do
-              expect(described_class.format('12345678901234', as: :cnpj)).to eq('12.345.678/9012-34')
+            it 'formats the number upcasing letters' do
+              expect(described_class.format('b2345A78901234', as: :cnpj)).to eq('B2.345.A78/9012-34')
             end
           end
         end
@@ -56,8 +56,32 @@ RSpec.describe BraDocuments::Formatter do
     end
 
     context 'when document is a string' do
-      it 'removes all not numbers from string' do
-        expect(described_class.raw('123.456.077-88')).to eq('12345607788')
+      context 'and kind is CPF' do
+        context 'and document is only number' do
+          it 'removes all not numbers from string' do
+            expect(described_class.raw('123.456.077-88')).to eq('12345607788')
+          end
+        end
+
+        context 'and document is alphanumeric' do
+          it 'removes all not numbers from string' do
+            expect(described_class.raw('AN.ZZE.NVM/0001-15')).to eq('000115')
+          end
+        end
+      end
+
+      context 'and kind is cnpj' do
+        context 'and document is only number' do
+          it 'removes all not alphanumeric from string' do
+            expect(described_class.raw('123.456.077-88', kind: :cnpj)).to eq('12345607788')
+          end
+        end
+
+        context 'and document is alphanumeric' do
+          it 'removes all not alphanumeric from string' do
+            expect(described_class.raw('AN.ZZE.NVM/0001-15', kind: :cnpj)).to eq('ANZZENVM000115')
+          end
+        end
       end
     end
   end

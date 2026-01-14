@@ -6,6 +6,8 @@ This gem make us able to generate Brazilian documents, such as CPF and CNPJ.
 We can generate a tottaly random number, or pass the number and the gem completes with the verification digits.
 If you already have a CPF or CNPJ only their numbers, you can also put the mask using the formatter.
 
+**Note:** Starting with recent regulations, CNPJ numbers now support alphanumeric characters (letters A-Z and numbers 0-9) in the company number and branch/subsidiary number portions, while the verification digits remain numeric only.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -55,6 +57,8 @@ BraDocuments::CPFGenerator.valid_verification_digit?(document: '123.123.123-88')
 
 ### CNPJ Generation
 
+**Note:** CNPJ now supports alphanumeric characters (A-Z, 0-9) in company and branch numbers.
+
 ```rb
 BraDocuments::CNPJGenerator.generate
 #=> "62885807804809"
@@ -73,9 +77,18 @@ BraDocuments::CNPJGenerator.generate(company_number: '53855973', matrix_subsidia
 
 BraDocuments::CNPJGenerator.generate(company_number: '53855973', matrix_subsidiary_number: '0001', formatted: true)
 #=> "53.855.973/0001-79"
+
+# Alphanumeric CNPJ examples
+BraDocuments::CNPJGenerator.generate(company_number: 'AB12CD34')
+#=> "AB12CD34567890"
+
+BraDocuments::CNPJGenerator.generate(company_number: 'AB12CD34', matrix_subsidiary_number: '0A01', formatted: true)
+#=> "AB.12C.D34/0A01-79"
 ```
 
 ### CNPJ digit verification
+
+**Note:** Validation now supports alphanumeric CNPJ numbers.
 
 ```rb
 BraDocuments::CNPJGenerator.valid_verification_digit?(document: '62885807804809')
@@ -86,6 +99,13 @@ BraDocuments::CNPJGenerator.valid_verification_digit?(document: '53.855.973/0001
 
 BraDocuments::CNPJGenerator.valid_verification_digit?(document: '53855973000177')
 #=> false
+
+# Alphanumeric CNPJ validation
+BraDocuments::CNPJGenerator.valid_verification_digit?(document: 'AB12CD3400A179')
+#=> true (if valid digits)
+
+BraDocuments::CNPJGenerator.valid_verification_digit?(document: 'AB.12C.D34/00A1-79')
+#=> true (if valid digits)
 ```
 
 ### Formatting
@@ -99,22 +119,42 @@ BraDocuments::Formatter.format('53855973879456', as: :cnpj)
 
 BraDocuments::Formatter.raw('53.855.973/8794-56')
 #=> "53855973879456"
+
+# Alphanumeric CNPJ formatting
+BraDocuments::Formatter.format('AB12CD3400A179', as: :cnpj)
+#=> "AB.12C.D34/00A1-79"
+
+BraDocuments::Formatter.raw('AB.12C.D34/00A1-79', kind: :cnpj)
+#=> "AB12CD3400A179"
 ```
 
 ### Matching
 
 ```rb
 BraDocuments::Matcher.match?('11111111111', kind: :cpf, mode: :raw)
+#=> false (rejected - all same digits)
+
+BraDocuments::Matcher.match?('12345678901', kind: :cpf, mode: :raw)
 #=> true
 
 BraDocuments::Matcher.match?('11111111111', kind: :cpf, mode: :formatted)
 #=> false
 
-BraDocuments::Matcher.match?('11111111111', kind: :cnpj, mode: :raw)
+BraDocuments::Matcher.match?('11111111111111', kind: :cnpj, mode: :raw)
 #=> false
 
 BraDocuments::Matcher.match?('90.978.812/0001-07', kind: :cnpj, mode: :formatted)
 #=> true
+
+# Alphanumeric CNPJ matching
+BraDocuments::Matcher.match?('AB12CD3400A179', kind: :cnpj, mode: :raw)
+#=> true
+
+BraDocuments::Matcher.match?('AB.12C.D34/00A1-79', kind: :cnpj, mode: :formatted)
+#=> true
+
+BraDocuments::Matcher.match?('AAAAAAAAAAAAAA', kind: :cnpj, mode: :raw)
+#=> false (rejected - all same characters)
 ```
 
 ### Tests Matching

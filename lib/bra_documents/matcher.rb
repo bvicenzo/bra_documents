@@ -3,23 +3,61 @@
 module BraDocuments
   class Matcher
     FORMATS = {
-      cpf: { formatted: /\A(\d{3}\.){2}\d{3}-\d{2}\z/, raw: /\A\d{11}\z/ },
-      cnpj: { formatted: /\A\d{2}.\d{3}\.\d{3}\/\d{4}-\d{2}\z/, raw: /\A\d{14}\z/ }
+      cpf: {
+        raw: /\A(?!([0-9])\1{10})\d{11}\z/,
+        formatted: /\A(?!([0-9])(?:[.\-]?\1){10}[.\-]?\d{2})(\d{3}\.){2}\d{3}-\d{2}\z/
+      },
+      cnpj: {
+        raw: /\A(?!([A-Z0-9])\1{11}\d{2})[A-Z0-9]{12}\d{2}\z/i,
+        formatted: /
+          \A
+          (?! # disallow all characters being the same
+            ([A-Z0-9])
+            (?: [.\-\/]? \1 ){11}
+            [.\-\/]? \d{2}
+          )
+          [A-Z0-9]{2} \.
+          [A-Z0-9]{3} \.
+          [A-Z0-9]{3} \/
+          [A-Z0-9]{4} -
+          \d{2}
+          \z
+        /ix
+      }
     }.freeze
+
 
     class << self
       # Macthes with Brazilian CPF and CNPJ documents.
       #
       #   BraDocuments::Matcher.match?('11111111111', kind: :cpf, mode: :raw)
+      #   # => false
+      #
+      #   BraDocuments::Matcher.match?('12345678888', kind: :cpf, mode: :raw)
       #   # => true
       #
       #   BraDocuments::Matcher.match?('11111111111', kind: :cpf, mode: :formatted)
       #   # => false
       #
-      #   BraDocuments::Matcher.match?('11111111111', kind: :cnpj, mode: :raw)
+      #   BraDocuments::Matcher.match?('11111111111111', kind: :cnpj, mode: :raw)
       #   # => false
       #
+      #   BraDocuments::Matcher.match?('11111B11111111', kind: :cnpj, mode: :raw)
+      #   # => true
+      #
+      #   BraDocuments::Matcher.match?('11111a11111111', kind: :cnpj, mode: :raw)
+      #   # => true
+      #
       #   BraDocuments::Matcher.match?('90.978.812/0001-07', kind: :cnpj, mode: :formatted)
+      #   # => true
+      #
+      #   BraDocuments::Matcher.match?('90.97A.812/0001-07', kind: :cnpj, mode: :formatted)
+      #   # => true
+      #
+      #   BraDocuments::Matcher.match?('90.97b.812/0001-07', kind: :cnpj, mode: :formatted)
+      #   # => true
+      #
+      #   BraDocuments::Matcher.match?('dd.ccc.bbb/AAAA-00', kind: :cnpj, mode: :formatted)
       #   # => true
       def match?(number, kind:, mode:)
         raise ArgumentError, "\"#{number.inspect}\" must be a String." unless number.is_a?(String)

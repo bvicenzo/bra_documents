@@ -10,7 +10,7 @@ RSpec.describe 'CPF Matcher' do
         expect { expect(cpf_example).to a_formatted_cpf }
           .to fail_with(
             "Was expected `#{cpf_example.inspect}` to be a Brazilian CPF document number but it isn't.\n"\
-            "A CPF has the following format XXX.XXX.XXX-XX where X are numbers from 0 to 9.\n"
+            "A CPF has the following format 999.999.999-99 where X are numbers from 0 to 9.\n"
           )
       end
     end
@@ -29,7 +29,7 @@ RSpec.describe 'CPF Matcher' do
         expect { expect(cpf_example).to be_a_formatted_cpf }
           .to fail_with(
             "Was expected `#{cpf_example.inspect}` to be a Brazilian CPF document number but it isn't.\n"\
-            "A CPF has the following format XXX.XXX.XXX-XX where X are numbers from 0 to 9.\n"
+            "A CPF has the following format 999.999.999-99 where X are numbers from 0 to 9.\n"
           )
       end
     end

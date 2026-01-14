@@ -26,9 +26,9 @@ RSpec.describe BraDocuments::CNPJGenerator do
       end
 
       context 'and matrix/subsidiary number is sent' do
-        context 'but it is not a number with 4 digits' do
+        context 'but it is not a number with 4 chars' do
           it 'raises argument error' do
-            expect { described_class.generate(matrix_subsidiary_number: 'OOO1') }
+            expect { described_class.generate(matrix_subsidiary_number: '!OO1') }
               .to raise_error(ArgumentError, 'Matrix or subsidiary number must be a number with 4 digits.')
           end
         end
@@ -69,15 +69,15 @@ RSpec.describe BraDocuments::CNPJGenerator do
     end
 
     context 'when company inscrition number is sent' do
-      context 'but it is not a number with 8 digits' do
+      context 'but it is not a number with 8 aplhanumeric' do
           it 'raises argument error' do
-            expect { described_class.generate(matrix_subsidiary_number: 'OOO1') }
+            expect { described_class.generate(matrix_subsidiary_number: '!OO1') }
               .to raise_error(ArgumentError, 'Matrix or subsidiary number must be a number with 4 digits.')
           end
       end
 
       context 'and it has the right size' do
-        let(:company_number) { '12345678' }
+        let(:company_number) { 'ANZZENVM' }
 
         context 'and matrix/subsidiary number is not sent' do
           context 'and formatted option is not sent' do
@@ -104,26 +104,27 @@ RSpec.describe BraDocuments::CNPJGenerator do
                 cnpj = described_class.generate(company_number: company_number, formatted: true)
 
                 expect(cnpj).to be_a_formatted_cnpj
-                expect(cnpj).to include('12.345.678')
+                expect(cnpj).to include('AN.ZZE.NVM')
               end
             end
           end
         end
 
         context 'and matrix/subsidiary number is sent' do
-          context 'but it is not a number with 4 digits' do
+          context 'but it is not a number with 4 aplhanumeric' do
             it 'raises argument error' do
-              expect { described_class.generate(company_number: company_number, matrix_subsidiary_number: 'OOO1') }
+              expect { described_class.generate(company_number: company_number, matrix_subsidiary_number: '!OO1') }
                 .to raise_error(ArgumentError, 'Matrix or subsidiary number must be a number with 4 digits.')
             end
           end
 
           context 'and matrix/subsidiary number has the right size' do
-            let(:matrix_subsidiary_number) { '0002' }
+            let(:matrix_subsidiary_number) { '0001' }
 
             context 'and formatted option is not sent' do
               it 'generates a CNPJ using giving company and matrix/subsidiary number' do
-                cnpj = described_class.generate(company_number: company_number, matrix_subsidiary_number: matrix_subsidiary_number)
+                cnpj = described_class
+                  .generate(company_number: company_number, matrix_subsidiary_number: matrix_subsidiary_number)
 
                 expect(cnpj).to be_a_raw_cnpj
                 expect(cnpj).to include(matrix_subsidiary_number)
@@ -133,7 +134,12 @@ RSpec.describe BraDocuments::CNPJGenerator do
             context 'and formatted option is sent' do
               context 'and it is false' do
                 it 'generates a CNPJ using giving company and matrix/subsidiary number' do
-                  cnpj = described_class.generate(company_number: company_number, matrix_subsidiary_number: matrix_subsidiary_number, formatted: false)
+                  cnpj = described_class
+                    .generate(
+                      company_number: company_number,
+                      matrix_subsidiary_number: matrix_subsidiary_number,
+                      formatted: false
+                    )
 
                   expect(cnpj).to be_a_raw_cnpj
                   expect(cnpj).to include(matrix_subsidiary_number)
@@ -142,7 +148,12 @@ RSpec.describe BraDocuments::CNPJGenerator do
 
               context 'and it is true' do
                 it 'generates a formatted CNPJ using giving company and matrix/subsidiary number' do
-                  cnpj = described_class.generate(company_number: company_number, matrix_subsidiary_number: matrix_subsidiary_number, formatted: true)
+                  cnpj = described_class
+                    .generate(
+                      company_number: company_number,
+                      matrix_subsidiary_number: matrix_subsidiary_number,
+                      formatted: true
+                    )
 
                   expect(cnpj).to be_a_formatted_cnpj
                   expect(cnpj).to include(matrix_subsidiary_number)
@@ -178,7 +189,7 @@ RSpec.describe BraDocuments::CNPJGenerator do
 
         context 'and digit calculation matches' do
           it 'is valid verification digit' do
-            expect(described_class).to be_valid_verification_digit(document: '26086824000110')
+            expect(described_class).to be_valid_verification_digit(document: 'ANZZENVM000115')
           end
         end
       end
@@ -206,7 +217,7 @@ RSpec.describe BraDocuments::CNPJGenerator do
 
         context 'and digit calculation matches' do
           it 'is valid verification digit' do
-            expect(described_class).to be_valid_verification_digit(document: '57.153.713/0001-02')
+            expect(described_class).to be_valid_verification_digit(document: 'AN.ZZE.NVM/0001-15')
           end
         end
       end

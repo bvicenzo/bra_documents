@@ -26,7 +26,7 @@ RSpec.describe BraDocuments::Matcher do
             expect { described_class.match?('123456789011', kind: :cpf, mode: :classic) }
               .to raise_error(
                 ArgumentError,
-                'Unknown document format mode ":classic". Known modes: formatted, raw, any.'
+                'Unknown document format mode ":classic". Known modes: raw, formatted, any.'
               )
           end
         end
@@ -97,8 +97,30 @@ RSpec.describe BraDocuments::Matcher do
               end
 
               context 'and it is a raw cnpj format' do
-                it 'matches with document number' do
-                  expect(described_class).to be_match('28082405000135', kind: :cnpj, mode: :raw)
+                context 'and it is only number' do
+                  it 'matches with document number' do
+                    expect(described_class).to be_match('28082405000135', kind: :cnpj, mode: :raw)
+                  end
+                end
+
+                context 'and it is alphanumeric' do
+                  context 'and it contains letters on verification digit' do
+                    it 'does not match with document number' do
+                      expect(described_class).not_to be_match('2808240500013B', kind: :cnpj, mode: :raw)
+                    end
+                  end
+
+                  context 'and it contains letters with accent' do
+                    it 'does not match with document number' do
+                      expect(described_class).not_to be_match('Á8082405000135', kind: :cnpj, mode: :raw)
+                    end
+                  end
+
+                  context 'and it contains letters' do
+                    it 'matches with document number' do
+                      expect(described_class).to be_match('B808c405000135', kind: :cnpj, mode: :raw)
+                    end
+                  end
                 end
               end
             end
@@ -111,8 +133,30 @@ RSpec.describe BraDocuments::Matcher do
               end
 
               context 'and it is a formatted cnpj format' do
-                it 'matches with document number' do
-                  expect(described_class).to be_match('60.823.604/0001-60', kind: :cnpj, mode: :formatted)
+                context 'and it is only number' do
+                  it 'matches with document number' do
+                    expect(described_class).to be_match('60.823.604/0001-60', kind: :cnpj, mode: :formatted)
+                  end
+                end
+
+                context 'and it is alphanumeric' do
+                  context 'and it contains letters on verification digit' do
+                    it 'does not match with document number' do
+                      expect(described_class).not_to be_match('60.823.604/0001-6B', kind: :cnpj, mode: :formatted)
+                    end
+                  end
+
+                  context 'and it contains letters with accent' do
+                    it 'does not match with document number' do
+                      expect(described_class).not_to be_match('Á0.823.604/0001-60', kind: :cnpj, mode: :formatted)
+                    end
+                  end
+
+                  context 'and it contains letters' do
+                    it 'matches with document number' do
+                      expect(described_class).to be_match('B0.823.c04/0001-60', kind: :cnpj, mode: :formatted)
+                    end
+                  end
                 end
               end
             end
